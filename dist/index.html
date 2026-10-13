@@ -12,9 +12,58 @@
   <link rel="preconnect" href="https://api.themoviedb.org" />
   <link rel="preconnect" href="https://image.tmdb.org" crossorigin />
   
+<link rel="stylesheet" href="./styles/app.css" />
 </head>
 <body>
   <div id="app"></div>
+
+<div id="tflix-2018-diagnostic"
+     style="position:fixed;top:16px;left:16px;right:16px;
+            z-index:2147483647;background:#facc15;color:#111;
+            font: bold 26px Arial,sans-serif;padding:22px;
+            border:4px solid #fff;">
+  TFlix Fix 2: HTML loaded
+</div>
+<script>
+(function () {
+  var panel = document.getElementById('tflix-2018-diagnostic');
+
+  window.__tflix2018Status = function (message) {
+    panel.textContent = 'TFlix Fix 2: ' + message;
+  };
+
+  window.addEventListener('error', function (event) {
+    window.__tflix2018Status(
+      'JavaScript/resource error: ' +
+      (event.message ||
+       (event.target && event.target.src) ||
+       'unknown')
+    );
+  }, true);
+
+  window.addEventListener('unhandledrejection', function (event) {
+    window.__tflix2018Status(
+      'Promise error: ' + String(event.reason)
+    );
+  });
+
+  setTimeout(function () {
+    var app = document.getElementById('app');
+
+    if (app && app.children.length > 0) {
+      panel.textContent = 'TFlix Fix 2: App interface loaded';
+      setTimeout(function () {
+        panel.style.display = 'none';
+      }, 3000);
+    } else if (!window.__tflix2018Started) {
+      window.__tflix2018Status(
+        'HTML loaded, but application JavaScript did not start'
+      );
+    }
+  }, 12000);
+})();
+</script>
+
   <script crossorigin id="vite-legacy-polyfill" src="./assets/polyfills-legacy.js"></script>
   <script crossorigin id="vite-legacy-entry" data-src="./assets/index-legacy.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
 </body>
